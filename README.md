@@ -7,9 +7,9 @@ Extensões VS Code:
 Instalar a suite haskell com ghcup
 
 Mudar a versão do ghc para a 9.2.4 com: <br>
-ghcup install ghc 9.2.4
+ghcup install ghc 9.2.4 <br>
 ghcup set ghc 9.2.4
 
 Resolver as dependencias das extensões do vscode, se não funcionar dá pra compilar diretamente com: <br>
-stack build
+stack build <br>
 stack run
