@@ -35,11 +35,11 @@ packages:
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
 #
-# extra-deps:
-# - acme-missiles-0.3
-# - git: https://github.com/commercialhaskell/stack.git
-#   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
-#
+extra-deps:
+ - acme-missiles-0.3
+ - haskell-dap-0.0.15.0@sha256:d58ec48d5f23c13675ba6a6ceb75f9ad9c0b0e90031e15cf7cd227478bad5fa5,945
+ - ghci-dap-0.0.19.0@sha256:5c4485b7a62d120f648c883f1f1480b25363ab5e14f6ca1ed2db526e0af1d43c,3293
+
 # extra-deps: []
 
 # Override default flag values for local packages and extra-deps
