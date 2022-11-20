@@ -4,4 +4,4 @@ import Lib
 import Menu
 
 main :: IO ()
-main = 
+main = menu
