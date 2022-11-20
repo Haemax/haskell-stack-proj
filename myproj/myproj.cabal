@@ -26,6 +26,8 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Locatario
+      Menu
   other-modules:
       Paths_myproj
   hs-source-dirs:
