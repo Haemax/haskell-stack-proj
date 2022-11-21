@@ -1,4 +1,6 @@
-module Locatario (buscaEndereco) where
+module Locatario (
+    buscaEndereco
+) where
 
     buscaEndereco :: [String] -> Int
 

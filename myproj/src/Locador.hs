@@ -1,4 +1,10 @@
-import Text.Printf
+module Locador (
+    Apartamento(..),
+    Endereco(..),
+    Agenda(..),
+    cadastrarImovel,
+    criarReserva
+) where
 
 -- Tipo do apartamento, com os atributos: Valor da diaria (Double), Numero de telefone para contato (String), Tipo de imóvel (String), Quantidade de quartos (Integer), Quantidade de quartos com suíte (Integer), Quantidade de banheiros (Integer), Número de vagas de garagem (Integer), Limite de hóspedes (Integer), Se tem wifi (Bool), Se tem piscina (Bool), Se aceita animais (Bool), Endereço (Endereco).
 data Apartamento = Apartamento
@@ -41,59 +47,59 @@ data Agenda = Agenda
 -- Coloca um apartamento como disponível para alugar
 cadastrarImovel :: IO ()
 cadastrarImovel = do
-  printf "Valor da diária: "
+  putStrLn "Valor da diária: "
   diaria <- readLn :: IO Double
-  printf "Telefone para contato: "
+  putStrLn "Telefone para contato: "
   telefone <- getLine
-  printf "Tipo do imóvel: "
+  putStrLn "Tipo do imóvel: "
   tipo <- getLine
-  printf "Quantidade de quartos: "
+  putStrLn "Quantidade de quartos: "
   quartos <- readLn :: IO Integer
-  printf "Quantidade de quartos com suíte: "
+  putStrLn "Quantidade de quartos com suíte: "
   quartosSuite <- readLn :: IO Integer
-  printf "Quantidade de banheiros: "
+  putStrLn "Quantidade de banheiros: "
   banheiros <- readLn :: IO Integer
-  printf "Quantidade de vagas de garagens: "
+  putStrLn "Quantidade de vagas de garagens: "
   garagens <- readLn :: IO Integer
-  printf "Limite de hóspedes: "
+  putStrLn "Limite de hóspedes: "
   hospedes <- readLn :: IO Integer
-  printf "Tem wi-fi? "
+  putStrLn "Tem wi-fi? "
   wifi <- getLine
-  printf "Tem piscina? "
+  putStrLn "Tem piscina? "
   piscina <- getLine
-  printf "Aceita animais? "
+  putStrLn "Aceita animais? "
   animais <- getLine
 
-  printf "CEP: "
+  putStrLn "CEP: "
   cep <- getLine
-  printf "Rua: "
+  putStrLn "Rua: "
   rua <- getLine
-  printf "Número: "
+  putStrLn "Número: "
   numero <- getLine
-  printf "Complemento: "
+  putStrLn "Complemento: "
   complemento <- getLine
-  printf "Bairro: "
+  putStrLn "Bairro: "
   bairro <- getLine
-  printf "Cidade: "
+  putStrLn "Cidade: "
   cidade <- getLine
-  printf "Estado: "
+  putStrLn "Estado: "
   estado <- getLine
 
   let endereco = Endereco cep rua numero complemento bairro cidade estado
   let apto = Apartamento diaria telefone tipo quartos quartosSuite banheiros garagens hospedes wifi piscina animais endereco
-  printf "Imóvel cadastrado."
+  putStrLn "Imóvel cadastrado."
 
 criarReserva :: IO ()
 criarReserva = do
-  printf "Id do apartamento a ser reservado: "
+  putStrLn "Id do apartamento a ser reservado: "
   idApto <- getLine
-  printf "Dia da reserva: "
+  putStrLn "Dia da reserva: "
   dia <- readLn :: IO Integer
-  printf "Mês da reserva: "
+  putStrLn "Mês da reserva: "
   mes <- readLn :: IO Integer
 
   let reserva = Agenda idApto dia mes True
-  printf "Reserva feita."
+  putStrLn "Reserva feita."
 
 main :: IO ()
 main = do

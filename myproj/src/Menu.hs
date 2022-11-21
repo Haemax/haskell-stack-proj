@@ -1,4 +1,6 @@
-module Menu(menu) where
+module Menu(
+    menu) 
+where
 
     menu :: String -> func
 
