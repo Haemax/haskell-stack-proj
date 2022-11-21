@@ -1,5 +1,5 @@
 module Menu(menu) where
 
-    menu :: String -> func
+    menu :: String -> String -- func
 
-    menu = 
+    menu s = "dummy"
