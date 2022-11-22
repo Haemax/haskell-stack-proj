@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Database.ConnectionBD
       Lib
       Locatario
       Menu
