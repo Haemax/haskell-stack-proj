@@ -2,7 +2,7 @@ module Locatario (buscaEndereco) where
 
     buscaEndereco :: [String] -> Int
 
-    buscaEndereco =
+    buscaEndereco n = 0
         
         
     
