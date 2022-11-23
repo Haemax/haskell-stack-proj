@@ -25,8 +25,8 @@ source-repository head
 
 library
   exposed-modules:
-      Database.ConnectionBD
-      Lib
+      Imovel
+      ImovelList
       Locatario
       Menu
   other-modules:
