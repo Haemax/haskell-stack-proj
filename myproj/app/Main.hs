@@ -6,7 +6,7 @@ import ImovelList
 import Locatario
 
 main :: IO ()
-main = do
+main = do --testes
     let im = Imovel {endereco = "abc", cidade = "Pirapora", bairro = "Casa Verde", preco = 100, estaReservado = True}
 
     let end = getEndereco im

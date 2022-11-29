@@ -29,6 +29,8 @@ library
       ImovelList
       Locatario
       Menu
+      TODO_FileHandler
+      TODO_Locador
   other-modules:
       Paths_myproj
   hs-source-dirs:
