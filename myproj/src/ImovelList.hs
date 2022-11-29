@@ -1,4 +1,5 @@
 {-# HLINT ignore "Use newtype instead of data" #-}
+
 module ImovelList (ImovelList(..), addImovel) where
     import Imovel
 
@@ -7,3 +8,5 @@ module ImovelList (ImovelList(..), addImovel) where
 
     addImovel :: Imovel -> ImovelList -> ImovelList
     addImovel im ImovelList{lista = l} = ImovelList{lista = im:l}
+
+    
