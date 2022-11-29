@@ -20,20 +20,20 @@ module Imovel (Imovel(..), getEndereco) where
     setCidade cid im = im {cidade = cid}
 
     getBairro :: Imovel -> String
-    getBairro im = im {bairro = bar}
+    getBairro Imovel {bairro = bar} = bar
     
     setBairro :: String -> Imovel -> Imovel
     setBairro bar im = im {bairro = bar}
     
-    getPreco :: Imovel -> String
+    getPreco :: Imovel -> Float
     getPreco Imovel {preco = e} = e
 
-    setPreco :: String -> Imovel -> Imovel
+    setPreco :: Float -> Imovel -> Imovel
     setPreco prec im = im {preco = prec}
 
-    isReservado :: Imovel -> String
+    isReservado :: Imovel -> Bool
     isReservado Imovel {estaReservado = e} = e
 
     setReservado :: Bool -> Imovel -> Imovel
-    setEndereco x im = im {isReservado = x}
+    setReservado x im = im {estaReservado = x}
 

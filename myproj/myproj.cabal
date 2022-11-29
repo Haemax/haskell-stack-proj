@@ -49,16 +49,3 @@ executable myproj-exe
       base >=4.7 && <5
     , myproj
   default-language: Haskell2010
-
-test-suite myproj-test
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  other-modules:
-      Paths_myproj
-  hs-source-dirs:
-      test
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      base >=4.7 && <5
-    , myproj
-  default-language: Haskell2010
