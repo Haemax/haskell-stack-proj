@@ -2,7 +2,7 @@
 {-# HLINT ignore "Use newtype instead of data" #-}
 {-# HLINT ignore "Redundant bracket" #-}
 {-# HLINT ignore "Use head" #-}
-module Locatario (buscaEndereco, buscaPreco, buscaData) where
+module Locatario (buscaId, buscaEndereco, buscaPreco, buscaData) where
 import Data.List.Split
 
 buscaId :: Int -> IO()
@@ -38,6 +38,24 @@ buscaData = do
     reservasTxt <- readFile "Reservas.txt"
     let linhasReserv = lines reservasTxt
     checkDate dia mes linhasReserv
+
+--cancelaReserva :: IO ()
+--cancelaReserva = do 
+   -- putStrLn "Digite o ID do imovel reservado: "
+  --  idImov <- readLn :: IO Int
+  --  reservasTxt <- readFile "Reservas.txt"
+-- let linhasReserv = lines reservasTxt
+    --checkReserv idImov linhasReserv
+
+--checkReserv :: Int -> [String] -> IO ()
+--checkReserv idImov [] = print "Reserva cancelada."
+--checkReserv idImov (h:t) = do
+  --  let splitH = head (splitOn "," h)
+   -- if (read splitH :: Int) == idImov
+   --      then do
+  --          h = ""
+    --    else
+     --       checkReserv id t
 
 checkDate :: Int -> Int -> [String] -> IO ()
 checkDate dia mes [] = print "Fim da lista de imoveis vagos no dia."
