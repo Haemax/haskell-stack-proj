@@ -1,8 +1,8 @@
 module Main (main) where
 
-import Locador 
-import Locatario
+import Menu
+import Menu (menu)
 
 main :: IO ()
 main = do
-    buscaData
+    menu
