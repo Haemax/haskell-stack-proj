@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use head" #-}
 module Locador (
     Imovel(..),
     Endereco(..),
@@ -8,6 +10,7 @@ module Locador (
     criarReserva,
     listarImoveis
 ) where
+import Data.List.Split
 
 -- Tipo do imovel, com os atributos: Valor da diaria (Double), Numero de telefone para contato (String), 
 -- Tipo de imóvel (String), Quantidade de quartos (Integer), Quantidade de quartos com suíte (Integer), 
@@ -143,7 +146,7 @@ listarImoveis = do
     mostraImovel imoveis
 
 mostraImovel :: [String] -> IO ()
+mostraImovel :: 
 mostraImovel (h:t) = do
-    --let imovel = splitOn "," h
-    --putStrLn "Id do imóvel: " ++ show (imovel!!0)
-    putStrLn "Mostrar imóvel"
+    let imovel = splitOn "," h
+    putStrLn ("Id do imóvel: " ++ show (imovel!!0))
