@@ -1,8 +1,15 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use newtype instead of data" #-}
 {-# HLINT ignore "Redundant bracket" #-}
-module Locatario (buscaEndereco, buscaPreco) where
+{-# HLINT ignore "Use head" #-}
+module Locatario (buscaEndereco, buscaPreco, buscaData) where
 import Data.List.Split
+
+buscaId :: Int -> IO()
+buscaId id = do
+    imoveisTxt <- readFile "Imoveis.txt"
+    let linhasImov = lines imoveisTxt
+    matchId id linhasImov
 
 buscaEndereco :: IO()
 buscaEndereco = do
@@ -14,13 +21,46 @@ buscaEndereco = do
 
 buscaPreco :: IO()
 buscaPreco = do
-    putStrLn "Digite o menor preco que está disposto a pagar: "
+    putStrLn "Digite o menor preco que esta disposto a pagar: "
     menPrec <- readLn :: IO Float
-    putStrLn "Digite o maior preco que está disposto a pagar: "
+    putStrLn "Digite o maior preco que esta disposto a pagar: "
     maiPrec <- readLn :: IO Float
     imoveisTxt <- readFile "Imoveis.txt"
     let linhasImov = lines imoveisTxt
     matchPriceRange menPrec maiPrec linhasImov
+
+buscaData :: IO ()
+buscaData = do
+    putStrLn "Digite o dia do mes pretendido para a reserva: "
+    dia <- readLn :: IO Int
+    putStrLn "Digite o mes pretendido para a reserva: "
+    mes <- readLn :: IO Int
+    reservasTxt <- readFile "Reservas.txt"
+    let linhasReserv = lines reservasTxt
+    checkDate dia mes linhasReserv
+
+checkDate :: Int -> Int -> [String] -> IO ()
+checkDate dia mes [] = print "Fim da lista de imoveis vagos no dia."
+checkDate dia mes (h:t) = do
+    let splitId  = (splitOn "," h) !! 0
+    let splitDia = (splitOn "," h) !! 1
+    let splitMes = (splitOn "," h) !! 2
+    if (read splitDia :: Int) /= dia && (read splitMes :: Int) /= mes
+        then do
+            buscaId (read splitId :: Int) 
+            checkDate dia mes t
+        else
+            checkDate dia mes t
+
+matchId :: Int -> [String] -> IO ()
+matchId id [] = print "Fim da lista de Id's."
+matchId id (h:t) = do
+    let splitH = head (splitOn "," h)
+    if (read splitH :: Int) == id
+         then do
+            print h
+        else
+            matchId id t
 
 matchPriceRange :: Float -> Float -> [String] -> IO ()
 matchPriceRange menPrec maiPrec [] = print "Fim da lista de Precos."
