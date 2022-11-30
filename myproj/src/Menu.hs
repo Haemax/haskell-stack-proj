@@ -5,9 +5,9 @@ import Locador (listarImoveis, cadastrarImovel, criarReserva)
 
 menu:: IO ()
 menu = do
-    putStr("Bem vindo ao RoofBNB!")
-    putStr("1 - Locatário")
-    putStr("2 - Locador")
+    print("Bem vindo ao RoofBNB!")
+    print("1 - Locatario")
+    print("2 - Locador")
     op <- readLn:: IO Int
     case op of
        1 -> locatarioSub 
@@ -16,9 +16,9 @@ menu = do
 
 locadorSub :: IO ()
 locadorSub = do
-    putStr("Esta eh a interface do locador")
-    putStr("1 - Cadastrar imovel")
-    putStr("2 - Criar uma reserva")
+    print("Esta eh a interface do locador")
+    print("1 - Cadastrar imovel")
+    print("2 - Criar uma reserva")
     op <- readLn:: IO Int
     case op of
        1 -> cadastrarImovel
@@ -27,11 +27,11 @@ locadorSub = do
 
 locatarioSub :: IO ()
 locatarioSub = do
-    putStr("Esta eh a interface do locatario")
-    putStr("1 - Busca de imovel pelo endereço")
-    putStr("2 - Busca de imovel pela faixa de preco")
-    putStr("3 - Checar imoveis vagos na data estipulada")
-    putStr("4 - Listar todos os imoveis disponiveis")
+    print("Esta eh a interface do locatario")
+    print("1 - Busca de imovel pelo endereço")
+    print("2 - Busca de imovel pela faixa de preco")
+    print("3 - Checar imoveis vagos na data estipulada")
+    print("4 - Listar todos os imoveis disponiveis")
     op <- readLn:: IO Int
     case op of
        1 -> buscaEndereco
