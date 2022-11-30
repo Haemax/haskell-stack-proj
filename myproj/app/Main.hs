@@ -1,8 +1,9 @@
 module Main (main) where
 
-import Locador
-import Locatario (buscaEndereco, buscaPreco)
+import Locador 
+import Locatario
+import Locatario (buscaData)
 
 main :: IO ()
 main = do
-    buscaPreco
+    buscaData
