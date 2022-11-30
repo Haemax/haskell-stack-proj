@@ -146,7 +146,7 @@ listarImoveis = do
     mostraImovel imoveis
 
 mostraImovel :: [String] -> IO ()
-mostraImovel :: 
+mostraImovel [] = print "Fim da lista de imoveis"
 mostraImovel (h:t) = do
     let imovel = splitOn "," h
     putStrLn ("Id do imóvel: " ++ show (imovel!!0))
