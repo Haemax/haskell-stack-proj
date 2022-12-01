@@ -21,9 +21,9 @@ buscaEndereco = do
 
 buscaPreco :: IO()
 buscaPreco = do
-    putStrLn "Digite o menor preco que esta disposto a pagar: "
+    putStrLn "Digite o menor preço que está disposto a pagar: "
     menPrec <- readLn :: IO Float
-    putStrLn "Digite o maior preco que esta disposto a pagar: "
+    putStrLn "Digite o maior preço que está disposto a pagar: "
     maiPrec <- readLn :: IO Float
     imoveisTxt <- readFile "Imoveis.txt"
     let linhasImov = lines imoveisTxt
@@ -31,9 +31,9 @@ buscaPreco = do
 
 buscaData :: IO ()
 buscaData = do
-    putStrLn "Digite o dia do mes pretendido para a reserva: "
+    putStrLn "Digite o dia do mês pretendido para a reserva: "
     dia <- readLn :: IO Int
-    putStrLn "Digite o mes pretendido para a reserva: "
+    putStrLn "Digite o mês pretendido para a reserva: "
     mes <- readLn :: IO Int
     reservasTxt <- readFile "Reservas.txt"
     let linhasReserv = lines reservasTxt

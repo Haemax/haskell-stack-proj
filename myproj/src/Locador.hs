@@ -1,9 +1,6 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use head" #-}
 module Locador (
-    Imovel(..),
-    Endereco(..),
-    Agenda(..),
     cadastrarImovel,
     salvarImovel,
     salvarEndereco,
@@ -11,48 +8,6 @@ module Locador (
     listarImoveis
 ) where
 import Data.List.Split
-
--- Tipo do imovel, com os atributos: Valor da diaria (Double), Numero de telefone para contato (String), 
--- Tipo de imóvel (String), Quantidade de quartos (Integer), Quantidade de quartos com suíte (Integer), 
--- Quantidade de banheiros (Integer), Número de vagas de garagem (Integer), Limite de hóspedes (Integer), 
--- Se tem wifi (Bool), Se tem piscina (Bool), Se aceita animais (Bool), Endereço (Endereco).
-data Imovel = Imovel
-  { idImovel :: Integer,
-    valorDiaria :: Double,
-    telefoneContato :: String,
-    tipoImovel :: String,
-    quantQuartos :: Integer,
-    quantQuartosSuite :: Integer,
-    quantBanheiros :: Integer,
-    quantGaragem :: Integer,
-    quantHospedes :: Integer,
-    temWifi :: String,
-    temPiscina :: String,
-    aceitaAnimais :: String,
-    endereco :: Endereco
-  }
-  deriving (Eq, Show)
-
--- Tipo do endereço
-data Endereco = Endereco
-  { cep :: String,
-    rua :: String,
-    numero :: String,
-    complemento :: String,
-    bairro :: String,
-    cidade :: String,
-    estado :: String
-  }
-  deriving (Eq, Show)
-
--- Tipo da agenda de reservas
-data Agenda = Agenda
-  { idApto :: String,
-    dia :: Integer,
-    mes :: Integer,
-    reservado :: Bool
-  }
-  deriving (Eq, Show)
 
 -- Coloca um apartamento como disponível para alugar
 cadastrarImovel :: IO ()
@@ -146,7 +101,7 @@ listarImoveis = do
     mostraImovel imoveis
 
 mostraImovel :: [String] -> IO ()
-mostraImovel [] = print "Fim da lista de imoveis"
+mostraImovel [] = print "Fim da lista de imóveis"
 mostraImovel (h:t) = do
     let imovel = splitOn "," h
     putStrLn ("Id do imóvel: " ++ show (imovel!!0))
