@@ -4,7 +4,6 @@ module Locador (
     cadastrarImovel,
     salvarImovel,
     salvarEndereco,
-    criarReserva,
     listarImoveis
 ) where
 import Data.List.Split
@@ -62,22 +61,6 @@ cadastrarEndereco idImovel = do
 
     salvarEndereco idImovel cep rua numero complemento bairro cidade estado
 
-criarReserva :: IO ()
-criarReserva = do
-  putStrLn "Id do imóvel a ser reservado: "
-  idImovel <- readLn :: IO Integer
-  putStrLn "Dia da reserva: "
-  dia <- readLn :: IO Integer
-  putStrLn "Mês da reserva: "
-  mes <- readLn :: IO Integer
-
-  salvarReserva idImovel dia mes
-  putStrLn "Reserva feita."
-
--- Tipo do imovel, com os atributos: ID do imóvel (Integer), Valor da diaria (Double), Número de telefone para contato (String), 
--- Tipo de imóvel (String), Quantidade de quartos (Integer), Quantidade de quartos com suíte (Integer), 
--- Quantidade de banheiros (Integer), Número de vagas de garagem (Integer), Limite de hóspedes (Integer), 
--- Se tem wifi (String), Se tem piscina (String), Se aceita animais (String).
 salvarImovel :: Integer -> Double -> String -> String -> String -> Integer -> Integer -> Integer -> Integer -> Integer -> String -> String -> String -> IO ()
 salvarImovel idImovel diaria telefone cpf tipo quartos quartosSuite banheiros garagens hospedes wifi piscina animais = do
     let imovel = show idImovel ++ "," ++ show diaria ++ "," ++ telefone ++ "," ++ cpf ++ "," ++ tipo ++ "," ++ show quartos ++ "," ++ show quartosSuite ++ "," ++ show banheiros ++ "," ++ show garagens ++ "," ++ show hospedes ++ "," ++ wifi ++ "," ++ piscina ++ "," ++ animais ++ "\n" 
@@ -88,17 +71,13 @@ salvarEndereco idImovel cep rua numero complemento bairro cidade estado = do
     let endereco = show idImovel ++ "," ++ cep ++ "," ++ rua ++ "," ++ numero ++ "," ++ complemento ++ "," ++ bairro ++ "," ++ cidade ++ "," ++ estado ++ "\n"
     appendFile "Enderecos.txt" endereco
 
-salvarReserva :: Integer -> Integer -> Integer -> IO ()
-salvarReserva idImovel dia mes = do
-    let reserva = show idImovel ++ "," ++ show dia ++ "," ++ show mes ++ "\n"
-    appendFile "Reservas.txt" reserva
-
 listarImoveis :: IO ()
 listarImoveis = do
     putStrLn "Imóveis cadastrados no sistema: "
     imoveisTxt <- readFile "Imoveis.txt"
     let imoveis = lines imoveisTxt
-    mostraImovel imoveis
+    if null imoveis then putStrLn "Não há imóveis cadastrados."
+    else mostraImovel imoveis
 
 mostraImovel :: [String] -> IO ()
 mostraImovel [] = print "Fim da lista de imóveis"

@@ -1,2 +1,4 @@
 1,55130000,Av Carlos Prestes,56,NA,Luz,Sabara do Sul,MT
 3,55130000,Av Carlos Prestes,56,NA,Luz,Sabara do Norte,MS
+1,1,2,3,4,5,6,7
+4,55,Manoel Luiz,78,Sem complemento,Catole,Campina Grande,Paraiba

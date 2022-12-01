@@ -2,7 +2,7 @@
 {-# HLINT ignore "Use newtype instead of data" #-}
 {-# HLINT ignore "Redundant bracket" #-}
 {-# HLINT ignore "Use head" #-}
-module Locatario (buscaId, buscaEndereco, buscaPreco, buscaData) where
+module Locatario (buscaId, buscaEndereco, buscaPreco, buscaData, criarReserva) where
 import Data.List.Split
 
 buscaId :: Int -> IO()
@@ -39,26 +39,25 @@ buscaData = do
     let linhasReserv = lines reservasTxt
     checkDate dia mes linhasReserv
 
---cancelaReserva :: IO ()
---cancelaReserva = do 
-   -- putStrLn "Digite o ID do imovel reservado: "
-  --  idImov <- readLn :: IO Int
-  --  reservasTxt <- readFile "Reservas.txt"
--- let linhasReserv = lines reservasTxt
-    --checkReserv idImov linhasReserv
+criarReserva :: IO ()
+criarReserva = do
+  putStrLn "Id do imóvel a ser reservado: "
+  idImovel <- readLn :: IO Integer
+  putStrLn "Dia da reserva: "
+  dia <- readLn :: IO Integer
+  putStrLn "Mês da reserva: "
+  mes <- readLn :: IO Integer
 
---checkReserv :: Int -> [String] -> IO ()
---checkReserv idImov [] = print "Reserva cancelada."
---checkReserv idImov (h:t) = do
-  --  let splitH = head (splitOn "," h)
-   -- if (read splitH :: Int) == idImov
-   --      then do
-  --          h = ""
-    --    else
-     --       checkReserv id t
+  salvarReserva idImovel dia mes
+  putStrLn "Reserva feita."
+
+salvarReserva :: Integer -> Integer -> Integer -> IO ()
+salvarReserva idImovel dia mes = do
+    let reserva = show idImovel ++ "," ++ show dia ++ "," ++ show mes ++ "\n"
+    appendFile "Reservas.txt" reserva
 
 checkDate :: Int -> Int -> [String] -> IO ()
-checkDate dia mes [] = print "Fim da lista de imoveis vagos no dia."
+checkDate dia mes [] = putStrLn "Fim da lista de imóveis vagos no dia."
 checkDate dia mes (h:t) = do
     let splitId  = (splitOn "," h) !! 0
     let splitDia = (splitOn "," h) !! 1
@@ -71,32 +70,32 @@ checkDate dia mes (h:t) = do
             checkDate dia mes t
 
 matchId :: Int -> [String] -> IO ()
-matchId id [] = print "Fim da lista de Id's."
+matchId id [] = putStrLn "Fim da lista de Ids."
 matchId id (h:t) = do
     let splitH = head (splitOn "," h)
     if (read splitH :: Int) == id
          then do
-            print h
+            putStrLn h
         else
             matchId id t
 
 matchPriceRange :: Float -> Float -> [String] -> IO ()
-matchPriceRange menPrec maiPrec [] = print "Fim da lista de Precos."
+matchPriceRange menPrec maiPrec [] = putStrLn "Fim da lista de preços."
 matchPriceRange menPrec maiPrec (h:t) = do
         let splitH = (splitOn "," h) !! 1 
         if (read splitH :: Float) >= menPrec && (read splitH :: Float) <= maiPrec
             then do
-                print h
+                putStrLn h
                 matchPriceRange menPrec maiPrec t
             else
                 matchPriceRange menPrec maiPrec t
 
 matchStringLine :: String -> [String] -> IO ()
-matchStringLine cmp [] = print "Fim da lista de Enderecos."
+matchStringLine cmp [] = putStrLn "Fim da lista de endereços."
 matchStringLine cmp  (h:t) = do
     if cmp `elem` splitOn "," h 
         then do
-        print h
+        putStrLn h
         matchStringLine cmp t
         else
         matchStringLine cmp t

@@ -1,7 +1,6 @@
 module Menu(menu) where
-import Locatario (buscaEndereco, buscaPreco, buscaData)
-import Locador (listarImoveis, cadastrarImovel, criarReserva)
-
+import Locatario (buscaEndereco, buscaPreco, buscaData, criarReserva)
+import Locador (listarImoveis, cadastrarImovel)
 
 menu:: IO ()
 menu = do
@@ -12,18 +11,19 @@ menu = do
     case op of
        1 -> locatarioSub 
        2 -> locadorSub
-       otherwise -> locadorSub
+       otherwise -> menu
 
 locadorSub :: IO ()
 locadorSub = do
     putStrLn "Esta é a interface do locador"
     putStrLn "1 - Cadastrar imóvel"
-    putStrLn "2 - Criar uma reserva"
+    putStrLn "2 - Voltar ao menu"
     op <- readLn:: IO Int
     case op of
        1 -> cadastrarImovel
-       2 -> criarReserva
+       2 -> menu
        otherwise -> locadorSub
+    menu
 
 locatarioSub :: IO ()
 locatarioSub = do
@@ -32,10 +32,15 @@ locatarioSub = do
     putStrLn "2 - Busca de imóvel pela faixa de preco"
     putStrLn "3 - Checar imóveis vagos na data estipulada"
     putStrLn "4 - Listar todos os imóveis disponíveis"
+    putStrLn "5 - Criar reserva por id"
+    putStrLn "6 - Voltar ao menu"
     op <- readLn:: IO Int
     case op of
        1 -> buscaEndereco
        2 -> buscaPreco
        3 -> buscaData
        4 -> listarImoveis
+       5 -> criarReserva
+       6 -> menu
        otherwise -> locatarioSub
+    menu
