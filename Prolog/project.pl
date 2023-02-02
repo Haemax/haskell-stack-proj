@@ -1,6 +1,7 @@
 :- dynamic imovel/4.
 
 criar_imovel(Nome, Tipo, Preco, Disp):-
+    not(imovel(Nome, _, _, _)),
     asserta(imovel(Nome, Tipo, Preco, Disp)).
 
 reservar(NomeImovel) :-
@@ -10,6 +11,7 @@ reservar(NomeImovel) :-
     write('Imovel reservado com sucesso!'), nl.
 
 listar_imoveis_disponiveis :-
+    nl,
     imovel(NomeDoImovel, Tipo, Preco, disponivel),
     write('Nome do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
@@ -20,6 +22,7 @@ listar_imoveis_disponiveis :-
 listar_imoveis_disponiveis.
 
 listar_imoveis_reservados :-
+    nl,
     imovel(NomeDoImovel, Tipo, Preco, reservado),
     write('Nome do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
@@ -30,6 +33,7 @@ listar_imoveis_reservados :-
 listar_imoveis_reservados.
 
 listar_imoveis_preco(PrecoMax):-
+    nl,
     imovel(NomeDoImovel, Tipo, Preco, disponivel),
     Preco =< PrecoMax,
     write('Nome do imovel: '), write(NomeDoImovel), nl,
@@ -44,6 +48,7 @@ listar_imoveis_preco(_) :-
 
 
 menu_usuario :-
+    nl,
     write('Bem-vindo ao sistema de reservas de imóveis'), nl,
     write('Escolha uma opção:'), nl,
     write('1. Reservar imovel'), nl,
@@ -69,6 +74,7 @@ menu_usuario :-
     menu_usuario.
 
 menu_adm :- 
+    nl,
     write('Bem-vindo ao sistema de administração de imóveis'), nl,
     write('Escolha uma opção:'), nl,
     write('1. Criar Imóvel'), nl,
@@ -99,22 +105,30 @@ menu_adm :-
     menu_adm.
 
 main :-
-    criar_imovel(1, solteiro, 100, disponivel),
-    criar_imovel(2, duplo, 200, disponivel),
-    criar_imovel(3, triplo, 300, disponivel),
-
+    cls,
     write('Bem Vindo!'), nl,
     write('Selecione uma opção:'), nl,
     write('1. Menu administração'), nl,
     write('2. Menu usuário'), nl,
+    write('3. Sair'), nl,
     read(Opcao),
     (Opcao =:= 1 ->
         menu_adm
     ; Opcao =:= 2 ->
         menu_usuario
+    ; Opcao =:= 3 ->
+        halt
     ;
         write('Opção inválida'), nl
     ),
     main.
 
+init :-
+    criar_imovel(1, solteiro, 100, disponivel),
+    criar_imovel(2, duplo, 200, disponivel),
+    criar_imovel(3, triplo, 300, disponivel).
+init.
 
+cls:-
+    write('\33\[2J').
+cls.
