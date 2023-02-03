@@ -1,13 +1,13 @@
 :- dynamic imovel/6.
-:- dynamic data/1.
+:- dynamic data/2.
 
-criar_data(Dia, Mes, Ano):-
+criar_data(Id, Dia, Mes, Ano):-
     X is Dia,
     Y is Mes * 30,
     Z is Ano * 365,
     R is X + Y + Z,
-    not(data(R)),
-    asserta(data(R)).
+    not(data(Id, _)),
+    asserta(data(Id, R)).
 criar_data.
 
 criar_imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim):-
@@ -15,13 +15,20 @@ criar_imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim):-
     asserta(imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim)).
 criar_imovel.
 
-reservar(NomeDoImovel, periodo) :-
+reservar(NomeDoImovel, Periodo) :-
     imovel(NomeDoImovel, Tipo, Preco, disponivel, Data_inicio, _),
     retract(imovel(NomeImovel, Tipo, Preco, disponivel, Data_inicio, _)),
-    X is Data_inicio + periodo,
+    X is Data_inicio + Periodo,
     asserta(imovel(NomeImovel, Tipo, Preco, reservado, Data_inicio, X)),
     write('Imovel reservado com sucesso!'), nl.
 reservar.
+
+listar_datas:-
+    nl,
+    data(Id, R),
+    write(Id), write(' '), write(R), nl,
+    fail.
+listar_datas.
 
 listar_imoveis_disponiveis :-
     nl,
@@ -42,7 +49,7 @@ listar_imoveis_reservados :-
     write('Preco da diária: '), write(Preco), nl,
     write('Disponibilidade: '), write(reservado), nl,
     X is Data_fim - Data_inicio,
-    write('Reservado pelos próximos: '), write(X), write("dias."), nl,
+    write('Reservado pelos próximos: '), write(X), write(' dias.'), nl,
     write('------------------'), nl,
     fail.
 listar_imoveis_reservados.
@@ -61,8 +68,17 @@ listar_imoveis_preco(_) :-
     not(imovel(_, _, _, _, _, _)),
     !.
 
-listar_imoveis_periodo:-
-
+listar_imoveis_periodo(Data_inicio, Data_fim):-
+    nl,
+    imovel(NomeDoImovel, Tipo, Preco, disponivel, P1, P2),
+    P1 >= Data_inicio,
+    P2 =< Data_fim,
+    write('Nome do imovel: '), write(NomeDoImovel), nl,
+    write('Tipo: '), write(Tipo), nl,
+    write('Preco da diária: '), write(Preco), nl,
+    write('Disponibilidade: '), write(disponivel), nl,
+    write('------------------'), nl,
+    fail.
 listar_imoveis_periodo.
 
 menu_data:-
@@ -74,7 +90,7 @@ menu_data:-
     read(Mes),
     write('Ano:'), nl,
     read(Ano),
-    criar_data(Dia, Mes, Ano).
+    criar_data(1, Dia, Mes, Ano).
 menu_data.
 
 menu_usuario :-
@@ -84,7 +100,8 @@ menu_usuario :-
     write('1. Reservar imovel'), nl,
     write('2. Listar imoveis disponíveis'), nl,
     write('3. Pesquisar imoveis por preço'), nl,
-    write('4. Voltar'), nl,
+    write('4. Pesquisar imoveis por período'), nl,
+    write('5. Voltar'), nl,
     read(Opcao),
     (Opcao =:= 1 ->
         write('Digite o Nome do imóvel que deseja reservar:'), nl,
@@ -99,6 +116,32 @@ menu_usuario :-
         read(PrecoMax),
         listar_imoveis_preco(PrecoMax)
     ; Opcao =:= 4 ->
+        write('Digite a data de entrada (De): '), nl,
+        write('Dia:'), nl,
+        read(Dia1),
+        write('Mês:'), nl,
+        read(Mes1),
+        write('Ano:'), nl,
+        read(Ano1),
+        retract(data(entrada, _)),
+        criar_data(entrada, Dia1, Mes1, Ano1),
+        listar_datas,
+
+        write('Digite a data de saída (Até): '), nl,
+        write('Dia:'), nl,
+        read(Dia2),
+        write('Mês:'), nl,
+        read(Mes2),
+        write('Ano:'), nl,
+        read(Ano2),
+        retract(data(saida, _)),
+        criar_data(saida, Dia2, Mes2, Ano2),
+        listar_datas,
+        data(entrada, D1),
+        data(saida, D2),
+        listar_imoveis_periodo(D1, D2)
+
+    ; Opcao =:= 5 ->
         menu_principal
     ;
         write('Opção inválida'), nl
@@ -123,7 +166,7 @@ menu_adm :-
         read(Preco),
         write('Digite a disponibilidade do imóvel:'), nl,
         read(Disp),
-        data(Dat),
+        data(1, Dat),
         criar_imovel(NomeImovel, Tipo, Preco, Disp, Dat, _)
         
     ; Opcao =:= 2 ->
@@ -138,7 +181,6 @@ menu_adm :-
     menu_adm.
 
 menu_principal:-
-    init,
     write('Bem Vindo!'), nl,
     write('Selecione uma opção:'), nl,
     write('1. Menu administração'), nl,
@@ -157,16 +199,19 @@ menu_principal:-
     menu_principal.
 
 main :-
-    cls, 
+    cls,
     menu_data,
+    init, 
     menu_principal.
-main.
 
 init :-
-    data(DataAtual),
-    criar_imovel(1, solteiro, 100, disponivel, DataAtual, _),
-    criar_imovel(2, duplo, 200, disponivel, DataAtual, _),
-    criar_imovel(3, triplo, 300, disponivel, DataAtual, _).
+    data(1, DataAtual),
+    criar_data(entrada, 1,1,1980),
+    criar_data(saida, 1,1,1980),
+    criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual),
+    criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
+    criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual),
+    listar_datas.
 init.
 
 cls:-
