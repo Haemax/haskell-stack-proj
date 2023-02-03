@@ -20,20 +20,27 @@ reservar(NomeDoImovel, Periodo) :-
     retract(imovel(NomeImovel, Tipo, Preco, disponivel, Data_inicio, _)),
     X is Data_inicio + Periodo,
     asserta(imovel(NomeImovel, Tipo, Preco, reservado, Data_inicio, X)),
-    write('Imovel reservado com sucesso!'), nl.
+    nl, write('Imovel reservado com sucesso!'), nl.
 reservar.
 
-listar_datas:-
+cancelar_reserva(NomeDoImovel):-
+    imovel(NomeDoImovel, Tipo, Preco, _, Data_inicio, Data_fim),
+    retract(imovel(NomeDoImovel, _, _, _, _, _)),
+    asserta(imovel(NomeDoImovel, Tipo, Preco, disponivel, Data_inicio, Data_fim)),
+    nl, write('Reserva cancelada com sucesso!'), nl.
+cancelar_reserva.
+
+/**listar_datas:-
     nl,
     data(Id, R),
     write(Id), write(' '), write(R), nl,
     fail.
-listar_datas.
+listar_datas. **/
 
 listar_imoveis_disponiveis :-
     nl,
     imovel(NomeDoImovel, Tipo, Preco, disponivel, _, _),
-    write('Nome do imovel: '), write(NomeDoImovel), nl,
+    write('Endereço do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
     write('Preco da diária: '), write(Preco), nl,
     write('Disponibilidade: '), write(disponivel), nl,
@@ -44,7 +51,7 @@ listar_imoveis_disponiveis.
 listar_imoveis_reservados :-
     nl,
     imovel(NomeDoImovel, Tipo, Preco, reservado, Data_inicio, Data_fim),
-    write('Nome do imovel: '), write(NomeDoImovel), nl,
+    write('Endereço do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
     write('Preco da diária: '), write(Preco), nl,
     write('Disponibilidade: '), write(reservado), nl,
@@ -58,7 +65,7 @@ listar_imoveis_preco(PrecoMax):-
     nl,
     imovel(NomeDoImovel, Tipo, Preco, disponivel, _, _),
     Preco =< PrecoMax,
-    write('Nome do imovel: '), write(NomeDoImovel), nl,
+    write('Endereço do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
     write('Preco da diária: '), write(Preco), nl,
     write('Disponibilidade: '), write(disponivel), nl,
@@ -73,13 +80,15 @@ listar_imoveis_periodo(Data_inicio, Data_fim):-
     imovel(NomeDoImovel, Tipo, Preco, disponivel, P1, P2),
     P1 >= Data_inicio,
     P2 =< Data_fim,
-    write('Nome do imovel: '), write(NomeDoImovel), nl,
+    write('Endereço do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
     write('Preco da diária: '), write(Preco), nl,
     write('Disponibilidade: '), write(disponivel), nl,
     write('------------------'), nl,
     fail.
-listar_imoveis_periodo.
+listar_imoveis_periodo(_,_) :-
+    not(imovel(_, _, _, _, _, _)),
+    !.
 
 menu_data:-
     nl,
@@ -97,25 +106,30 @@ menu_usuario :-
     nl,
     write('Bem-vindo ao sistema de reservas de imóveis'), nl,
     write('Escolha uma opção:'), nl,
-    write('1. Reservar imovel'), nl,
-    write('2. Listar imoveis disponíveis'), nl,
-    write('3. Pesquisar imoveis por preço'), nl,
-    write('4. Pesquisar imoveis por período'), nl,
-    write('5. Voltar'), nl,
+    write('1. Cancelar reserva de imovel'), nl,
+    write('2. Reservar imovel'), nl,
+    write('3. Listar imoveis disponíveis'), nl,
+    write('4. Pesquisar imoveis por preço'), nl,
+    write('5. Pesquisar imoveis por período'), nl,
+    write('6. Voltar'), nl,
     read(Opcao),
     (Opcao =:= 1 ->
-        write('Digite o Nome do imóvel que deseja reservar:'), nl,
+        write('Digite o endereço do imóvel que deseja cancelar a reserva'), nl,
+        read(NomeDoImovel),
+        cancelar_reserva(NomeDoImovel)
+    ; Opcao =:= 2 ->
+        write('Digite o endereço do imóvel que deseja reservar:'), nl,
         read(NomeDoImovel),
         write('Por quantos dias você quer reservar?:'), nl,
         read(Periodo),
         reservar(NomeDoImovel, Periodo)
-    ; Opcao =:= 2 ->
-        listar_imoveis_disponiveis
     ; Opcao =:= 3 ->
+        listar_imoveis_disponiveis
+    ; Opcao =:= 4 ->
         write('Digite o preço máximo do imóvel:'), nl,
         read(PrecoMax),
         listar_imoveis_preco(PrecoMax)
-    ; Opcao =:= 4 ->
+    ; Opcao =:= 5 ->
         write('Digite a data de entrada (De): '), nl,
         write('Dia:'), nl,
         read(Dia1),
@@ -125,7 +139,6 @@ menu_usuario :-
         read(Ano1),
         retract(data(entrada, _)),
         criar_data(entrada, Dia1, Mes1, Ano1),
-        listar_datas,
 
         write('Digite a data de saída (Até): '), nl,
         write('Dia:'), nl,
@@ -136,12 +149,11 @@ menu_usuario :-
         read(Ano2),
         retract(data(saida, _)),
         criar_data(saida, Dia2, Mes2, Ano2),
-        listar_datas,
         data(entrada, D1),
         data(saida, D2),
         listar_imoveis_periodo(D1, D2)
 
-    ; Opcao =:= 5 ->
+    ; Opcao =:= 6 ->
         menu_principal
     ;
         write('Opção inválida'), nl
@@ -208,10 +220,10 @@ init :-
     data(1, DataAtual),
     criar_data(entrada, 1,1,1980),
     criar_data(saida, 1,1,1980),
+    
     criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual),
     criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
-    criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual),
-    listar_datas.
+    criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual).
 init.
 
 cls:-
