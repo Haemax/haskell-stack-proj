@@ -217,10 +217,11 @@ main :-
     menu_principal.
 
 init :-
-    data(1, DataAtual),
+    %criar_data(1, 1,1,1980),
+    %data(1, DataAtual),
     criar_data(entrada, 1,1,1980),
     criar_data(saida, 1,1,1980),
-    
+    data(1, DataAtual),
     criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual),
     criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
     criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual).
