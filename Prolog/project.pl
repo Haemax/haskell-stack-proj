@@ -1,18 +1,31 @@
-:- dynamic imovel/4.
+:- dynamic imovel/6.
+:- dynamic data/1.
 
-criar_imovel(Nome, Tipo, Preco, Disp):-
-    not(imovel(Nome, _, _, _)),
-    asserta(imovel(Nome, Tipo, Preco, Disp)).
+criar_data(Dia, Mes, Ano):-
+    X is Dia,
+    Y is Mes * 30,
+    Z is Ano * 365,
+    R is X + Y + Z,
+    not(data(R)),
+    asserta(data(R)).
+criar_data.
 
-reservar(NomeImovel) :-
-    imovel(NomeImovel, _, _, disponivel),
-    retract(imovel(NomeImovel, Tipo, Preco, disponivel)),
-    asserta(imovel(NomeImovel, Tipo, Preco, reservado)),
+criar_imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim):-
+    not(imovel(Nome, _, _, _, _, _)),
+    asserta(imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim)).
+criar_imovel.
+
+reservar(NomeDoImovel, periodo) :-
+    imovel(NomeDoImovel, Tipo, Preco, disponivel, Data_inicio, _),
+    retract(imovel(NomeImovel, Tipo, Preco, disponivel, Data_inicio, _)),
+    X is Data_inicio + periodo,
+    asserta(imovel(NomeImovel, Tipo, Preco, reservado, Data_inicio, X)),
     write('Imovel reservado com sucesso!'), nl.
+reservar.
 
 listar_imoveis_disponiveis :-
     nl,
-    imovel(NomeDoImovel, Tipo, Preco, disponivel),
+    imovel(NomeDoImovel, Tipo, Preco, disponivel, _, _),
     write('Nome do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
     write('Preco da diária: '), write(Preco), nl,
@@ -23,18 +36,20 @@ listar_imoveis_disponiveis.
 
 listar_imoveis_reservados :-
     nl,
-    imovel(NomeDoImovel, Tipo, Preco, reservado),
+    imovel(NomeDoImovel, Tipo, Preco, reservado, Data_inicio, Data_fim),
     write('Nome do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
     write('Preco da diária: '), write(Preco), nl,
     write('Disponibilidade: '), write(reservado), nl,
+    X is Data_fim - Data_inicio,
+    write('Reservado pelos próximos: '), write(X), write("dias."), nl,
     write('------------------'), nl,
     fail.
 listar_imoveis_reservados.
 
 listar_imoveis_preco(PrecoMax):-
     nl,
-    imovel(NomeDoImovel, Tipo, Preco, disponivel),
+    imovel(NomeDoImovel, Tipo, Preco, disponivel, _, _),
     Preco =< PrecoMax,
     write('Nome do imovel: '), write(NomeDoImovel), nl,
     write('Tipo: '), write(Tipo), nl,
@@ -43,9 +58,24 @@ listar_imoveis_preco(PrecoMax):-
     write('------------------'), nl,
     fail.
 listar_imoveis_preco(_) :-
-    not(imovel(_, _, _, _)),
+    not(imovel(_, _, _, _, _, _)),
     !.
 
+listar_imoveis_periodo:-
+
+listar_imoveis_periodo.
+
+menu_data:-
+    nl,
+    write('Por favor insira a data atual:'), nl,
+    write('Dia:'), nl,
+    read(Dia),
+    write('Mês:'), nl,
+    read(Mes),
+    write('Ano:'), nl,
+    read(Ano),
+    criar_data(Dia, Mes, Ano).
+menu_data.
 
 menu_usuario :-
     nl,
@@ -57,9 +87,11 @@ menu_usuario :-
     write('4. Voltar'), nl,
     read(Opcao),
     (Opcao =:= 1 ->
-        write('Digite o Nome do imovel que deseja reservar:'), nl,
+        write('Digite o Nome do imóvel que deseja reservar:'), nl,
         read(NomeDoImovel),
-        reservar(NomeDoImovel)
+        write('Por quantos dias você quer reservar?:'), nl,
+        read(Periodo),
+        reservar(NomeDoImovel, Periodo)
     ; Opcao =:= 2 ->
         listar_imoveis_disponiveis
     ; Opcao =:= 3 ->
@@ -67,7 +99,7 @@ menu_usuario :-
         read(PrecoMax),
         listar_imoveis_preco(PrecoMax)
     ; Opcao =:= 4 ->
-        main
+        menu_principal
     ;
         write('Opção inválida'), nl
     ),
@@ -91,21 +123,22 @@ menu_adm :-
         read(Preco),
         write('Digite a disponibilidade do imóvel:'), nl,
         read(Disp),
-        criar_imovel(NomeImovel, Tipo, Preco, Disp)
+        data(Dat),
+        criar_imovel(NomeImovel, Tipo, Preco, Disp, Dat, _)
         
     ; Opcao =:= 2 ->
         listar_imoveis_disponiveis
     ; Opcao =:= 3 ->
         listar_imoveis_reservados
     ; Opcao =:= 4 ->
-        main
+        menu_principal
     ;
         write('Opção inválida'), nl
     ),
     menu_adm.
 
-main :-
-    cls,
+menu_principal:-
+    init,
     write('Bem Vindo!'), nl,
     write('Selecione uma opção:'), nl,
     write('1. Menu administração'), nl,
@@ -121,12 +154,19 @@ main :-
     ;
         write('Opção inválida'), nl
     ),
-    main.
+    menu_principal.
+
+main :-
+    cls, 
+    menu_data,
+    menu_principal.
+main.
 
 init :-
-    criar_imovel(1, solteiro, 100, disponivel),
-    criar_imovel(2, duplo, 200, disponivel),
-    criar_imovel(3, triplo, 300, disponivel).
+    data(DataAtual),
+    criar_imovel(1, solteiro, 100, disponivel, DataAtual, _),
+    criar_imovel(2, duplo, 200, disponivel, DataAtual, _),
+    criar_imovel(3, triplo, 300, disponivel, DataAtual, _).
 init.
 
 cls:-
