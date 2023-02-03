@@ -12,21 +12,41 @@ criar_data.
 
 criar_imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim):-
     not(imovel(Nome, _, _, _, _, _)),
-    asserta(imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim)).
+    asserta(imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim)),
+	salvar_imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim),
+	nl, write('Imovel cadastrado com sucesso!'), nl.
 criar_imovel.
 
+salvar_imovel(Nome, Tipo, Preco, Disp, Data_inicio, Data_fim) :-
+	open('imoveis.txt', append, Out),
+    write(Out, Nome),
+	write(Out, ", "),
+	write(Out, Tipo),
+	write(Out, ", "),
+	write(Out, Preco),
+	write(Out, ", "),
+	write(Out, Disp),
+	write(Out, ", "),
+	write(Out, Data_inicio),
+	write(Out, ", "),
+	write(Out, Data_fim),
+	write(Out, "."),
+	nl(Out),
+    close(Out). 
+salvar_imovel.
+
 reservar(NomeDoImovel, Periodo) :-
-    imovel(NomeDoImovel, Tipo, Preco, disponivel, Data_inicio, _),
-    retract(imovel(NomeImovel, Tipo, Preco, disponivel, Data_inicio, _)),
+    imovel(NomeDoImovel, Tipo, Preco, "disponivel", Data_inicio, _),
+    retract(imovel(NomeImovel, Tipo, Preco, "disponivel", Data_inicio, _)),
     X is Data_inicio + Periodo,
-    asserta(imovel(NomeImovel, Tipo, Preco, reservado, Data_inicio, X)),
+    asserta(imovel(NomeImovel, Tipo, Preco, "reservado", Data_inicio, X)),
     nl, write('Imovel reservado com sucesso!'), nl.
 reservar.
 
 cancelar_reserva(NomeDoImovel):-
     imovel(NomeDoImovel, Tipo, Preco, _, Data_inicio, Data_fim),
     retract(imovel(NomeDoImovel, _, _, _, _, _)),
-    asserta(imovel(NomeDoImovel, Tipo, Preco, disponivel, Data_inicio, Data_fim)),
+    asserta(imovel(NomeDoImovel, Tipo, Preco, "disponivel", Data_inicio, Data_fim)),
     nl, write('Reserva cancelada com sucesso!'), nl.
 cancelar_reserva.
 
@@ -172,6 +192,7 @@ menu_adm :-
     (Opcao =:= 1 ->
         write('Digite o endereço do imóvel:'), nl,
         read(NomeImovel),
+		write(NomeImovel), nl,
         write('Digite o tipo do imóvel:'), nl,
         read(Tipo),
         write('Digite o preço do imóvel:'), nl,
@@ -222,9 +243,9 @@ init :-
     criar_data(entrada, 1,1,1980),
     criar_data(saida, 1,1,1980),
     data(1, DataAtual),
-    criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual),
-    criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
-    criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual).
+    criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual).
+    %criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
+    %criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual).
 init.
 
 cls:-
