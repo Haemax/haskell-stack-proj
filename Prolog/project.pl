@@ -50,13 +50,6 @@ cancelar_reserva(NomeDoImovel):-
     nl, write('Reserva cancelada com sucesso!'), nl.
 cancelar_reserva.
 
-/**listar_datas:-
-    nl,
-    data(Id, R),
-    write(Id), write(' '), write(R), nl,
-    fail.
-listar_datas. **/
-
 listar_imoveis_disponiveis :-
     nl,
     imovel(NomeDoImovel, Tipo, Preco, disponivel, _, _),
@@ -192,7 +185,6 @@ menu_adm :-
     (Opcao =:= 1 ->
         write('Digite o endereço do imóvel:'), nl,
         read(NomeImovel),
-		write(NomeImovel), nl,
         write('Digite o tipo do imóvel:'), nl,
         read(Tipo),
         write('Digite o preço do imóvel:'), nl,
@@ -238,14 +230,12 @@ main :-
     menu_principal.
 
 init :-
-    %criar_data(1, 1,1,1980),
-    %data(1, DataAtual),
     criar_data(entrada, 1,1,1980),
     criar_data(saida, 1,1,1980),
     data(1, DataAtual),
-    criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual).
-    %criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
-    %criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual).
+    criar_imovel(1, solteiro, 100, disponivel, DataAtual, DataAtual),
+    criar_imovel(2, duplo, 200, disponivel, DataAtual, DataAtual),
+    criar_imovel(3, triplo, 300, disponivel, DataAtual, DataAtual).
 init.
 
 cls:-
