@@ -43,6 +43,19 @@ reservar(NomeDoImovel, Periodo) :-
     nl, write('Imovel reservado com sucesso!'), nl.
 reservar.
 
+reserva_imovel(Nome,Id_usuario,Data_inicio,Dias) :-
+	open('imoveis_reserva.txt', append, Out),
+    write(Out, Nome),
+	write(Out, ", "),
+	write(Out, Id_usuario),
+	write(Out, ", "),
+	write(Out, Data_inicio),
+	write(Out, ", "),
+	write(Out, Dias),
+	nl(Out),
+    close(Out). 
+reserva_imovel.
+
 cancelar_reserva(NomeDoImovel):-
     imovel(NomeDoImovel, Tipo, Preco, _, Data_inicio, Data_fim),
     retract(imovel(NomeDoImovel, _, _, _, _, _)),
@@ -140,9 +153,13 @@ menu_usuario :-
     ; Opcao =:= 2 ->
         write('Digite o endereço do imóvel que deseja reservar:'), nl,
         read(NomeDoImovel),
+        write('Digite seu nome:'), nl,
+        read(Nome),
+        write('Digite a data (Ex:dd/mm/aaaa):'), nl,
+        read(Inicio),
         write('Por quantos dias você quer reservar?:'), nl,
         read(Periodo),
-        reservar(NomeDoImovel, Periodo)
+        reserva_imovel(NomeDoImovel,Nome,Inicio, Periodo)
     ; Opcao =:= 3 ->
         listar_imoveis_disponiveis
     ; Opcao =:= 4 ->
